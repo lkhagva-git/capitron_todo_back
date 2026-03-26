@@ -43,6 +43,7 @@ urlpatterns = [
     path('api/add_task/', views.add_task, name='add_task'),
     path('api/get_task/', views.get_task, name='get_task'),
     path('api/delete_task/', views.delete_task, name='delete_task'),
+    path('api/update_task/', views.update_task, name='update_task'),
 
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

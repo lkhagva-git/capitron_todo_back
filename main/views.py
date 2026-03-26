@@ -126,7 +126,32 @@ def delete_task(request):
         return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_task(request):
+    task_id = request.data.get('id')
 
+    if not task_id:
+        return Response(
+            {"error": "Task ID is required"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        task = Task.objects.get(id=task_id, user=request.user)
+    except Task.DoesNotExist:
+        return Response(
+            {"error": "Task not found"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    serializer = TaskSerializer(task, data=request.data, partial=True)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

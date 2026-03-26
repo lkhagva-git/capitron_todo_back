@@ -55,8 +55,8 @@ class Task(models.Model):
     deadline = models.DateTimeField(verbose_name ='Даалгаврын эцсийн хугацаа', null=True, blank=True)
     status = models.IntegerField(choices=STATUS_CHOICES, verbose_name="Даалгаврийн төлөв", null=True, blank=True)
     priority = models.IntegerField(choices=PRIORITY_CHOICES, verbose_name="Даалгаврийн priority", null=True, blank=True)
-    created_at = models.DateField(verbose_name ='Даалгавар үүссэн огноо', null=True, blank=True)
-    updated_at = models.DateField(verbose_name ='Даалгавар шинэчилсэн огноо', null=True, blank=True)
+    created_at = models.DateField(verbose_name ='Даалгавар үүссэн огноо', auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateField(verbose_name ='Даалгавар шинэчилсэн огноо', auto_now=True, null=True, blank=True)
      
     
 
