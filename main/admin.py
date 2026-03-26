@@ -9,11 +9,6 @@ class ImageAdmin(admin.ModelAdmin):
     list_display = ('uuid', 'photo')
     # search_fields = ('uuid')
 
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'first_name', 'last_name', 'email', 'image')
-    # search_fields = ('first_name', 'last_name', 'email')
-
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_at')
