@@ -1,0 +1,6 @@
+Django
+psycopg2
+djangorestframework
+django-cors-headers
+pillow
+djangorestframework-simplejwt

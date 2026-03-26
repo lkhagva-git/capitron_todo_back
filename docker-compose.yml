@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      # - PGPORT=7004
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres@2026capitron
+    ports:
+      - "7004:5432"
+    networks:
+      - proxynetwork
+
+  web:
+    container_name: todo_back
+    restart: always
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8004:8000"
+    networks:
+      - proxynetwork
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com     
+      - PGADMIN_DEFAULT_PASSWORD=admin              
+    ports:
+      - "5050:80"             
+    networks:
+      - proxynetwork
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin               
+
+networks:
+  proxynetwork:
+    external: true
+
+volumes:
+  pgadmin_data:
