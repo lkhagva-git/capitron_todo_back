@@ -34,30 +34,26 @@ def test_access(request):
     )
 
 
-
+# Creates record of user and creates JWT token
 @api_view(['POST'])
 def signin(request):
-    print("req ------------------->", request.data)
     first_name = request.data.get('first_name')
     last_name = request.data.get('last_name')
     email = request.data.get('email')
     password = request.data.get('password')
 
-    # Basic validation
     if not email or not password:
         return Response(
             {"error": "Email and password are required"},
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    # Check if user already exists
     if User.objects.filter(username=email).exists():
         return Response(
             {"error": "User already exists"},
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    # Create user
     user = User.objects.create_user(
         username=email,   
         email=email,
@@ -66,7 +62,6 @@ def signin(request):
         last_name=last_name
     )
 
-    # Generate JWT tokens
     refresh = RefreshToken.for_user(user)
 
     return Response(
@@ -79,6 +74,7 @@ def signin(request):
     )
     
 
+# Retrieves user's data
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def profile_data(request):
@@ -86,12 +82,10 @@ def profile_data(request):
     return Response(serializer.data)
 
 
+# Creates a task
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_task(request):
-    print("req ------------------->", request.data)
-    print("request.user ------------------->", request.user)
-
     serializer = TaskSerializer(data=request.data)
 
     if serializer.is_valid():
@@ -101,7 +95,7 @@ def add_task(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
+# Retrieves data of taskes
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_task(request):
@@ -110,6 +104,7 @@ def get_task(request):
     return Response(serializer.data)
 
 
+# Deletes specific task
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def delete_task(request):
@@ -126,6 +121,7 @@ def delete_task(request):
         return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
+# Updates a task
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def update_task(request):
